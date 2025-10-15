@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pizzería El Bambino D' Oro - Pedidos</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <div class="logo">🍕</div>
+      <div>
+        <h1>El Bambino D' Oro</h1>
+        <p class="tag">Pizzería · Pedidos por WhatsApp</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Sección de Promociones -->
+    <section class="promotions-section">
+      <h2>🔥 Promociones Especiales</h2>
+      <div class="promotions-slider">
+        <div class="promo-card">
+          <div class="promo-badge">OFERTA</div>
+          <div class="promo-image">
+            <img src="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Promoción 2x1">
+          </div>
+          <div class="promo-content">
+            <h3>Martes 2x1</h3>
+            <p>Todos los martes lleva 2 pizzas al precio de 1 en pedidos mayores a $40,000</p>
+            <div class="promo-footer">
+              <span class="promo-code">Código: MARTES2X1</span>
+              <span class="promo-expiry">Válido hasta: 31/12/2023</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="promo-card">
+          <div class="promo-badge">NUEVO</div>
+          <div class="promo-image">
+            <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1025&q=80" alt="Combo Familiar">
+          </div>
+          <div class="promo-content">
+            <h3>Combo Familiar</h3>
+            <p>Pizza familiar + 2 bebidas + postre por solo $85,000</p>
+            <div class="promo-footer">
+              <span class="promo-price">$85.000</span>
+              <span class="promo-expiry">Válido siempre</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="promo-card">
+          <div class="promo-badge">-20%</div>
+          <div class="promo-image">
+            <img src="images/pizza1.jpg" alt="Descuento en domicilios">
+          </div>
+          <div class="promo-content">
+            <h3>20% OFF en Domicilios</h3>
+            <p>Obtén 20% de descuento en pedidos superiores a $60,000 con envío gratis</p>
+            <div class="promo-footer">
+              <span class="promo-code">Código: DOMI20</span>
+              <span class="promo-expiry">Válido hasta: 15/12/2023</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="catalog">
+      <h2>🍕 Nuestras Pizzas</h2>
+      <div id="pizzas" class="grid"></div>
+    </section>
+  </main>
+
+  <!-- Modal principal para todo el proceso -->
+  <div id="orderModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="close" id="closeOrder">✖</button>
+      
+      <!-- Paso 1: Tipo de pedido (Porción o Tamaño completo) -->
+      <div id="stepType" class="step active">
+        <h2 id="pizzaTitle">¿Cómo quieres tu pizza?</h2>
+        
+        <!-- Opción Porción -->
+        <div class="type-section">
+          <h3>🫰 Porción Individual</h3>
+          <div class="portion-option selected" data-type="portion">
+            <div class="type-info">
+              <strong>Porción individual</strong>
+              <span class="price">$8.000</span>
+            </div>
+            <div class="quantity-selector">
+              <label>Cantidad de porciones:</label>
+              <div class="quantity-controls">
+                <button class="qty-btn" data-action="decrease">-</button>
+                <span class="quantity" id="portionQty">1</span>
+                <button class="qty-btn" data-action="increase">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Opción Tamaños completos -->
+        <div class="type-section">
+          <h3>🍕 Pizza Completa</h3>
+          <div id="sizeSelection" class="size-selection">
+            <!-- Los tamaños se generarán aquí -->
+          </div>
+        </div>
+
+        <button id="nextToAdditions" class="btn-next">Continuar a Adiciones →</button>
+      </div>
+
+      <!-- Paso 2: Adiciones -->
+      <div id="stepAdditions" class="step hidden">
+        <h2>Adiciones para tu pizza</h2>
+        <div id="additionsSelection" class="additions-selection"></div>
+        <div class="step-buttons">
+          <button id="backToType" class="btn-back">← Volver</button>
+          <button id="nextToDrinks" class="btn-next">Continuar a Bebidas →</button>
+        </div>
+      </div>
+
+      <!-- Paso 3: Bebidas -->
+      <div id="stepDrinks" class="step hidden">
+        <h2>Selecciona tu bebida</h2>
+        <div id="drinksSelection" class="drinks-selection"></div>
+        <div class="step-buttons">
+          <button id="backToAdditions" class="btn-back">← Volver</button>
+          <button id="nextToCheckout" class="btn-next">Continuar a Datos →</button>
+        </div>
+      </div>
+
+      <!-- Paso 4: Datos del pedido -->
+      <div id="stepCheckout" class="step hidden">
+        <h2>Completa tu pedido</h2>
+        <div class="checkout-form">
+          <label>Nombre completo:</label>
+          <input id="customerName" placeholder="Tu nombre" required />
+          
+          <label>Dirección de entrega:</label>
+          <input id="customerAddress" placeholder="Dirección completa" required />
+          
+          <label>Teléfono de contacto:</label>
+          <input id="customerPhone" placeholder="Número de celular" type="tel" required />
+          
+          <label>Método de pago:</label>
+          <select id="paymentMethod" required>
+            <option value="">Selecciona método de pago</option>
+            <option value="efectivo">Efectivo</option>
+            <option value="nequi">Nequi</option>
+            <option value="daviplata">DaviPlata</option>
+          </select>
+          
+          <div class="order-summary">
+            <h3>Resumen del pedido</h3>
+            <div id="orderSummary"></div>
+            <div class="total-line">
+              <strong>Total a pagar:</strong>
+              <span id="orderTotal">$0</span>
+            </div>
+          </div>
+          
+          <div class="step-buttons">
+            <button id="backToDrinks" class="btn-back">← Volver</button>
+            <button id="sendWhats" class="btn-whatsapp">Enviar pedido por WhatsApp</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Pedidos al WhatsApp: <strong>+57 315 369 3952</strong></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
